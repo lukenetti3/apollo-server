@@ -24,8 +24,7 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     async longURL(root, { id }, { models }) {
-      // return models.LongURL.findByPk(id);
-      return "Hello!";
+      return models.LongURL.findByPk(id);
     },
     async shortURL(root, { id }, { models }) {
       return models.ShortURL.findByPk(id);
