@@ -1,40 +1,46 @@
 const { ApolloServer, gql } = require("apollo-server");
+const models = require("./models");
 
 const typeDefs = gql`
-  type LongURL {
+  type Link {
     id: Int!
-    long_URL: String!
-  }
-
-  type ShortURL {
-    id: Int!
-    short_URL: String!
+    name: String!
+    url: String!
   }
 
   type Query {
-    longURL: String
-    shortURL: String
+    getLink(id: Int!): Link!
+    getLinks: [Link!]!
   }
 
   type Mutation {
-    createShortURL(name: String!): LongURL!
+    createLink(name: String!, url: String!): Link!
   }
 `;
 
 const resolvers = {
   Query: {
-    async longURL(root, { id }, { models }) {
-      return models.LongURL.findByPk(id);
+    async getLinks(root, args, { models }) {
+      return models.Link.findAll();
     },
-    async shortURL(root, { id }, { models }) {
-      return models.ShortURL.findByPk(id);
+    async getLink(root, { id }, { models }) {
+      return models.Link.findByPk(id);
+    }
+  },
+  Mutation: {
+    async createLink(root, { name, url }, { models }) {
+      return models.Link.create({
+        name,
+        url
+      });
     }
   }
 };
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  context: { models }
 });
 
 server.listen().then(({ url }) => {
