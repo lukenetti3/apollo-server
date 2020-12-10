@@ -7,12 +7,10 @@ const typeDefs = gql`
     name: String!
     url: String!
   }
-
   type Query {
     getLink(id: Int!): Link!
     getLinks: [Link!]!
   }
-
   type Mutation {
     createLink(name: String!, url: String!): Link!
   }
@@ -28,10 +26,10 @@ const resolvers = {
     }
   },
   Mutation: {
-    async createLink(root, { url, slug }, { models }) {
+    async createLink(root, { name, url }, { models }) {
       return models.Link.create({
-        url,
-        slug
+        name,
+        url
       });
     }
   }
