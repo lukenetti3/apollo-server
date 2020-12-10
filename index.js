@@ -28,10 +28,10 @@ const resolvers = {
     }
   },
   Mutation: {
-    async createLink(root, { name, url }, { models }) {
+    async createLink(root, { url, slug }, { models }) {
       return models.Link.create({
-        name,
-        url
+        url,
+        slug
       });
     }
   }
